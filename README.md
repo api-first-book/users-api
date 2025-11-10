@@ -1,22 +1,25 @@
-# users-api
+# Users API
 
-Users API application with Flask and MySQL (a fork of [kubernetes-flask-mysql](https://github.com/Rikkraan/kubernetes-flask-mysql))
+書籍『APIファースト ─ Postmanで学ぶ効率的かつ柔軟な開発アプローチ』の第8章「Postman Insights」で使用するサンプルAPI「Users API」のアプリケーションリポジトリです。
+このUsers APIは、FlaskとMySQLを使って構築されたアプリケーションで、[kubernetes-flask-mysql](https://github.com/Rikkraan/kubernetes-flask-mysql)をベースにしたフォーク版です。
 
 ## Quickstart
 
-Clone repository
+ローカル環境でgitコマンドが使える人は下記のようにgit cloneしてください。
 
 ```bash
 git clone https://github.com/api-first-book/users-api.git
 ```
 
-Create KIND cluster
+なお、gitコマンドがない方は、直接[こちら](https://github.com/api-first-book/users-api)よりダウンロードしてください。
+
+次に、下記のようにkindコマンドでKubernetes (k8s) クラスターを作成してください。
 
 ```bash
 kind create cluster --image kindest/node:v1.30.0 --config=kubernetes/kind/cluster.yaml --wait 5m
 ```
 
-Check if the cluster has been created as expected
+次のコマンドでk8sクラスターが期待通り作成されていることを確認します。
 
 ```bash
 $ kind get cluster
@@ -24,7 +27,7 @@ $ kind get cluster
 kind
 ```
 
-Then, deploy all k8s resources to the cluster
+次のコマンドで、すべてのk8sリソースをk8sクラスターにデプロイします。
 
 ```bash
 kubectl apply -f kubernetes/users-api-all-in-one.yml
@@ -36,7 +39,7 @@ kubectl apply -f kubernetes/users-api-all-in-one.yml
 # kubectl apply -f app-deployment.yml
 ```
 
-Check all pods are running
+次のコマンドで、すべてのPodsが稼働している (running) ことを確認します。
 
 ```bash
 kubectl get po
@@ -46,58 +49,14 @@ usersapi-59bcb745ff-sfdtf              1/1     Running   2          7m53s
 mysql-6b47c788c6-blzlc                 1/1     Running   0          7m43s
 ```
 
-Finally port porward svc/users port of 5000 to localhost:8080
+最後に、`svc/users`のポート`5000`をローカルホストの`8080`番ポートにポートフォワードします。
 
 ```bash
 kubectl port-forward svc/usersapi 8080:5000
 ```
 
-You can access the service
+すべての設定が完了したので、下記のようにサービスにアクセスできるようになりました。
 
 ```bash
 curl http://localhost:8080/users
-```
-
-## Custom Container Images
-
-### Build & load Container Images
-
-Build container images and load them to the KIND cluster
-
-```bash
-cd app
-docker build . -t users-api
-
-cd ../mysql
-docker build . -t mysql:5.7 --platform linux/x86_64
-
-# load images to the KIND cluster
-kind load docker-image users-api --name kind
-kind load docker-image mysql:5.7 --name kind
-```
-
-### Push container Images to GHCR
-
-```bash
-echo $PAT | docker login ghcr.io -u yokawasa --password-stdin
-docker tag users-api ghcr.io/api-first-book/users-api/users-api:0.0.1
-docker tag mysql:5.7 ghcr.io/api-first-book/users-api/mysql:5.7
-docker push ghcr.io/api-first-book/users-api/users-api:0.0.1
-docker push ghcr.io/api-first-book/users-api/mysql:5.7
-```
-
-### Update container image in k8s manifests
-
-Finally, update the container image property value in app-deployment.yml and mysql-deployment.yml with the new one:
-
-> kubernetes/app-deployment.yml
-```yaml
-# image: ghcr.io/api-first-book/users-api/users-api:latest
-image: users-api
-```
-
-> kubernetes/mysql-deployment.yml
-```yaml
-# image: ghcr.io/api-first-book/users-api/mysql:5.7
-image: mysql:5.7
 ```
