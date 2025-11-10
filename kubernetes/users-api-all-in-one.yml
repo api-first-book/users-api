@@ -43,7 +43,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: ghcr.io/yokawasa/users-api-flask-mysql/mysql:5.7
+        image: ghcr.io/api-first-book/users-api/mysql:5.7
         imagePullPolicy: IfNotPresent
         env:
         - name: MYSQL_ROOT_PASSWORD
@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
         - name: usersapi
-          image: ghcr.io/yokawasa/users-api-flask-mysql/users-api:0.0.1
+          image: ghcr.io/api-first-book/users-api/users-api:0.0.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
