@@ -1,4 +1,4 @@
-# users-api-flask-mysql
+# users-api
 
 Users API application with Flask and MySQL (a fork of [kubernetes-flask-mysql](https://github.com/Rikkraan/kubernetes-flask-mysql))
 
@@ -7,7 +7,7 @@ Users API application with Flask and MySQL (a fork of [kubernetes-flask-mysql](h
 Clone repository
 
 ```bash
-git clone https://github.com/yokawasa/users-api-flask-mysql.git
+git clone https://github.com/api-first-book/users-api.git
 ```
 
 Create KIND cluster
@@ -80,10 +80,10 @@ kind load docker-image mysql:5.7 --name kind
 
 ```bash
 echo $PAT | docker login ghcr.io -u yokawasa --password-stdin
-docker tag users-api ghcr.io/yokawasa/users-api-flask-mysql/users-api:0.0.1
-docker tag mysql:5.7 ghcr.io/yokawasa/users-api-flask-mysql/mysql:5.7
-docker push ghcr.io/yokawasa/users-api-flask-mysql/users-api:0.0.1
-docker push ghcr.io/yokawasa/users-api-flask-mysql/mysql:5.7
+docker tag users-api ghcr.io/api-first-book/users-api/users-api:0.0.1
+docker tag mysql:5.7 ghcr.io/api-first-book/users-api/mysql:5.7
+docker push ghcr.io/api-first-book/users-api/users-api:0.0.1
+docker push ghcr.io/api-first-book/users-api/mysql:5.7
 ```
 
 ### Update container image in k8s manifests
@@ -92,12 +92,12 @@ Finally, update the container image property value in app-deployment.yml and mys
 
 > kubernetes/app-deployment.yml
 ```yaml
-# image: ghcr.io/yokawasa/users-api-flask-mysql/users-api:latest
+# image: ghcr.io/api-first-book/users-api/users-api:latest
 image: users-api
 ```
 
 > kubernetes/mysql-deployment.yml
 ```yaml
-# image: ghcr.io/yokawasa/users-api-flask-mysql/mysql:5.7
+# image: ghcr.io/api-first-book/users-api/mysql:5.7
 image: mysql:5.7
 ```

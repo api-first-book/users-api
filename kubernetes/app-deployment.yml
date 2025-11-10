@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: usersapi
-          image: ghcr.io/yokawasa/users-api-flask-mysql/users-api:0.0.1
+          image: ghcr.io/api-first-book/users-api/users-api:0.0.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
